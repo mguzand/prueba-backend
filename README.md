@@ -59,6 +59,3 @@ $ npm run start:prod
 ## License
 
 Nest is [MIT licensed](LICENSE).
-
-[Senprende](https://senprede.hn)
-[Mi Epresa en Linea](https://miempresaenlinea.org)
