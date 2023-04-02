@@ -4,12 +4,13 @@ import { DerivativeProductsController } from './derivative-products.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DerivativeProduct } from './entities/derivative-product.entity';
 import { FuelModule } from '../fuel/fuel.module';
+import { TripsModule } from '../trips/trips.module';
 
 @Module({
   controllers: [DerivativeProductsController],
   imports: [
     TypeOrmModule.forFeature([DerivativeProduct]),
-    FuelModule
+    TripsModule
   ],
   exports: [
     DerivativeProductsService

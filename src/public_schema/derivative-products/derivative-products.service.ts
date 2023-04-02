@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { TripsService } from '../trips/trips.service';
 import { CreateDerivativeProductDto } from './dto/create-derivative-product.dto'; 
 import { DerivativeProduct } from './entities/derivative-product.entity';
 
@@ -10,7 +11,44 @@ export class DerivativeProductsService {
   constructor(
     @InjectRepository(DerivativeProduct)
     private _derivativeProduct: Repository<DerivativeProduct>,
+    private _tripsService: TripsService
   ){}
+
+
+  async comparative(){
+    const datavis = await this._tripsService._tripGet.createQueryBuilder('s')
+    .select("COUNT(*) AS total")
+    .addSelect("TO_CHAR(fecha_creacion, 'mm') AS mes")
+    .groupBy("TO_CHAR(fecha_creacion, 'mm')")
+    .getRawMany()
+
+
+    const data = await this._derivativeProduct.createQueryBuilder('s')
+    .select("SUM(s.administrativo + s.logistico + s.operacion) AS total")
+    .addSelect("TO_CHAR(fecha_creacion, 'mm') AS mes")
+    .groupBy("TO_CHAR(fecha_creacion, 'mm')")
+    .getRawMany()
+
+
+    const comparatives =  data.map((items) => {
+      const ele = datavis.filter(s => s.mes == items.mes);
+      let ttotal = 0;
+      
+     if(ele.length != 0)
+       ttotal = ele[0].total
+
+      return {
+        productos: (items.total/100),
+        viajes: (ttotal/100),
+        mes: items.mes
+      }
+  });
+
+  return comparatives
+
+
+
+  }
 
 
   

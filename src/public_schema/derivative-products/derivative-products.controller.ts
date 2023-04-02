@@ -23,5 +23,10 @@ export class DerivativeProductsController {
   OilsMonthly(){
     return this.derivativeProductsService.OilsMonthly();
   }
+
+  @Get('comparative-trips-products')
+  comparatives(){
+    return this.derivativeProductsService.comparative();
+  }
   
 }
