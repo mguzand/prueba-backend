@@ -165,5 +165,18 @@ export class FuelService {
 
 
 
+  async refrigerantLosses(){
+    const data = await this._fuel.createQueryBuilder('s')
+    .select("SUM(s.administrativo + s.indirecto_de_proveedor + s.logistica) AS total")
+    .addSelect("TO_CHAR(fecha_creacion, 'mm') AS mes")
+    .groupBy("TO_CHAR(fecha_creacion, 'mm')")
+    .where('tipo_de_emision = :id', { id: 'emisiones indirectas' })
+    .getRawMany()
+
+    return data
+  }
+
+
+
   
 }

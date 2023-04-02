@@ -55,6 +55,11 @@ export class FuelController {
       return this._fuelService.comparative()
     }
 
+    @Get('refrigerant-losses')
+    refrigerantLosses(){
+      return this._fuelService.refrigerantLosses()
+    }
+
 
 
 }
